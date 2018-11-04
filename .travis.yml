@@ -1,20 +1,23 @@
 language: node_js
 node_js:
-- node
+  - node
 cache:
   directories:
-  - node_modules
+    - node_modules
 script:
-- npm run-script test-travis
-after_success:
-- eval `ssh-agent -s`
-- chmod 600 .travis/deployment_id_rsa
-- ssh-add .travis/deployment_id_rsa
-- git remote add web https://dougwt@git.mycodebytes.com/header_parser.git
-- echo "Pushing '$TRAVIS_BRANCH' changes to https://header-parser.myuserstories.com"
-- git push web $TRAVIS_BRANCH --force
-before_script:
-- echo -e "Host dougwt.webfactional.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-before_install:
-- openssl aes-256-cbc -K $encrypted_8f608e2a4577_key -iv $encrypted_8f608e2a4577_iv
-  -in .travis/deployment_id_rsa.enc -out .travis/deployment_id_rsa -d
+  - npm run-script test-travis
+before_deploy:
+  - npm install now --no-save # Install Now CLI on Travis
+deploy:
+  - provider: script
+    script:
+      - now --token $NOW_TOKEN
+    skip_cleanup: true
+    on:
+      all_branches: true
+      master: false
+  - provider: script
+    script: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN header-parser.mycodebytes.com
+    skip_cleanup: true
+    on:
+      branch: master
