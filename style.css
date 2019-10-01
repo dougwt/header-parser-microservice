@@ -37,9 +37,9 @@ li pre {
   white-space: pre-wrap;
 }
 
-li pre a:link,
-li pre a:visited,
-li pre a:hover,
-li pre a:active {
+a:link,
+a:visited,
+a:hover,
+a:active {
   color: #816997;
 }
