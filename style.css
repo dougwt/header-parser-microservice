@@ -36,3 +36,10 @@ li pre {
   display: inline;
   white-space: pre-wrap;
 }
+
+li pre a:link,
+li pre a:visited,
+li pre a:hover,
+li pre a:active {
+  color: #816997;
+}
